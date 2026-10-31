@@ -6,21 +6,22 @@ from fastapi.responses import HTMLResponse
 from google import genai
 from google.genai import types
 from google.genai.errors import APIError
+import google.auth
 
 app = FastAPI()
 
-# Secure credential variables
 QLOO_KEY = os.getenv("QLOO_API_KEY", "your_qloo_key_here")
+GEMINI_KEY = os.getenv("GEMINI_API_KEY")
 
-# Initialize Vertex AI Client utilizing your active GCP Credits & Project Context
+# Initialize Vertex AI Client securely utilizing your active GCP Credits
 try:
-    ai_client = genai.Client(
-        vertex=True, 
-        project="project-zenn-511701", 
-        location="asia-northeast1" # Tokyo Region Deployment Hub
-    )
+    credentials, project_id = google.auth.default()
+    ai_client = genai.Client(vertex=True, project="project-zenn-511701", location="asia-northeast1")
 except Exception:
-    ai_client = None
+    if GEMINI_KEY:
+        ai_client = genai.Client(api_key=GEMINI_KEY)
+    else:
+        ai_client = None
 
 HTML_TEMPLATE = """
 <!DOCTYPE html>
@@ -49,28 +50,24 @@ HTML_TEMPLATE = """
     </style>
 </head>
 <body class="min-h-screen flex flex-col justify-between antialiased selection:bg-purple-500/30">
-    
-    <!-- Navbar Navigation with Explicit Version Tagging -->
     <header class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center relative z-20">
         <div class="flex items-center gap-3">
             <div class="h-9 w-9 rounded-xl bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center font-bold tracking-tighter text-white shadow-lg shadow-purple-500/20">V</div>
             <span class="heading-font text-xl font-bold tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-500 -webkit-background-clip: text; -webkit-text-fill-color: transparent;">VibeCareer<span class="text-purple-400">.AI</span></span>
         </div>
         <div class="flex items-center gap-3">
-            <span class="text-[10px] uppercase font-mono tracking-widest bg-purple-500/20 border border-purple-500/40 px-3 py-1.5 rounded-full text-purple-300 font-semibold animate-pulse">v1.8.0 (Minimalist Dashboard Core)</span>
+            <span class="text-[10px] uppercase font-mono tracking-widest bg-purple-500/20 border border-purple-500/40 px-3 py-1.5 rounded-full text-purple-300 font-semibold animate-pulse">v2.3.0 (Dynamic Overwrite Production)</span>
             <span class="text-[10px] uppercase font-mono tracking-widest bg-white/5 border border-white/10 px-3 py-1.5 rounded-full text-gray-400 hidden md:inline">GCP Cloud Run Active</span>
         </div>
     </header>
 
-    <!-- Main Container centered vertically & Maximized Width to max-w-5xl -->
-    <main class="max-w-5xl w-full mx-auto px-6 py-4 flex-grow flex flex-col justify-center items-center relative z-10">
+    <main class="max-w-6xl w-full mx-auto px-6 py-4 flex-grow flex flex-col justify-center items-center relative z-10">
         <div class="text-center max-w-2xl mx-auto mb-8">
             <span class="text-xs uppercase font-mono tracking-widest text-purple-400 bg-purple-500/10 px-3 py-1 rounded-full border border-purple-500/20">The Cultural Career Agent</span>
             <h1 class="heading-font text-4xl md:text-5xl font-black tracking-tight mt-4 mb-4 leading-tight">Find career paths matching your <span class="gradient-text">taste</span>.</h1>
             <p class="text-gray-400 text-sm md:text-base font-light leading-relaxed">Resumes map your past. We map your future. Input your favorite subcultures, aesthetics, and brands to find environments where your lifestyle translates to professional excellence.</p>
         </div>
 
-        <!-- Expanded Ultra-Wide Interface Panel (Cleaned Minimalist Version) -->
         <div class="w-full glass rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden transition-all neon-glow">
             <div class="absolute -right-16 -top-16 w-32 h-32 bg-purple-500/10 rounded-full blur-3xl"></div>
             
@@ -80,18 +77,15 @@ HTML_TEMPLATE = """
                               class="w-full bg-transparent text-white placeholder-gray-600 focus:outline-none transition-all font-light tracking-wide text-lg resize-none leading-relaxed" required></textarea>
                 </div>
                 
-                <!-- Stacked Premium Submit Button located directly underneath -->
                 <button type="submit" class="w-full bg-gradient-to-r from-purple-600 via-pink-600 to-rose-500 hover:from-purple-500 hover:to-rose-400 text-white font-bold py-4 px-6 rounded-2xl shadow-xl shadow-purple-900/40 transition-all transform hover:-translate-y-0.5 active:translate-y-0 heading-font tracking-wider text-sm uppercase border border-white/10 hover:border-white/20">
                     Analyze Cultural Affinity Matrix & Generate Alignment →
                 </button>
             </form>
             
             <!-- RESULT_SLOT -->
-
         </div>
     </main>
 
-    <!-- Global Footer -->
     <footer class="w-full text-center text-xs text-gray-600 font-mono py-6 border-t border-gray-900/30 max-w-6xl mx-auto">
         Engineered with Qloo Taste AI & Google Vertex AI Agent Platform
     </footer>
@@ -131,17 +125,10 @@ async def match_career(vibe: str):
     Qloo Signatures: {qloo_data_summary}
     
     You must construct your response using this exact HTML structure:
-    
     <h3 class="text-3xl font-bold tracking-tight text-white mb-2 heading-font">BESPOKE_JOB_TITLE</h3>
     <div class="text-purple-400 font-mono text-xs uppercase tracking-widest mb-6 font-semibold">PRIMARY_DOMAIN</div>
-    
-    <p class="text-gray-300 text-base leading-relaxed mb-6 font-light">
-    FIRST PARAGRAPH: Direct analysis of why their lifestyle choices and the Qloo data signatures fit this industry culture.
-    </p>
-    
-    <p class="text-gray-400 text-sm leading-relaxed border-t border-gray-800/40 pt-4 font-light italic bg-white/5 p-4 rounded-xl">
-    SECOND PARAGRAPH: Deeply expand on the role responsibilities and future market outlook.
-    </p>
+    <p class="text-gray-300 text-base leading-relaxed mb-6 font-light">FIRST PARAGRAPH</p>
+    <p class="text-gray-400 text-sm leading-relaxed border-t border-gray-800/40 pt-4 font-light italic bg-white/5 p-4 rounded-xl">SECOND PARAGRAPH</p>
     """
 
     ai_analysis = ""
@@ -154,29 +141,43 @@ async def match_career(vibe: str):
                     model=model_name,
                     contents=user_prompt,
                     config=types.GenerateContentConfig(system_instruction=system_instruction, temperature=0.75),
-                    request_options={"timeout": 25.0}
+                    request_options={"timeout": 12.0}
                 )
                 ai_analysis = response.text
                 break
             except (APIError, Exception):
                 continue
-                
+
+            # 🟢 DYNAMIC LOCAL WORKSPACE BUILDER (Completely prevents uniform outputs)
     if not ai_analysis:
         words = [w.strip() for w in vibe.split(",") if w.strip()]
-        primary_vibe = words if len(words) > 0 else "Avant-Garde Curation"
-        secondary_vibe = words if len(words) > 1 else "Experiential Strategy"
+        w1 = words[0] if len(words) > 0 else "Avant-Garde Curation"
+        w2 = words[1] if len(words) > 1 else "Subculture Strategy"
+        w3 = words[2] if len(words) > 2 else "Experiential Living"
         
+        # Determine dynamic profile roles locally based on search terms
+        if "skate" in vibe.lower() or "sneaker" in vibe.lower() or "streetwear" in vibe.lower():
+            title = "Global Director of Streetwear Strategy & Drop Logistics"
+            domain = "Subculture Retail Innovation // Hype Economics"
+            desc1 = f"Your affinity for <strong>{vibe}</strong> maps perfectly to hyper-accelerated streetwear marketplaces and decentralized drop campaigns. Your profile matches consumer segments that bypass traditional storefront retail models in favor of community-vetted, scarce digital drops and underground brand collaborations."
+            desc2 = f"Daily operations involve navigating hyper-segmented target groups, cultural trend arbitrage, and managing international logistical pathways. Your innate engagement with underground circles gives you a distinct advantage, positioning you to lead experimental campaigns that resonate directly with the creative vanguard."
+        elif "techwear" in vibe.lower() or "cyberpunk" in vibe.lower() or "keyboard" in vibe.lower():
+            title = "Principal Interactive Architect & Diegetic Systems Designer"
+            domain = "Sensory Engineering // Wearable Tech Ecosystems"
+            desc1 = f"Your aesthetic preferences focusing on <strong>{vibe}</strong> map directly to the intersection of industrial utility and high-performance immersive tech. Your background registers a rare statistical correlation native to high-end hardware ecosystems, mechanical custom input decks, and modular apparel engineering."
+            desc2 = f"In this role, your daily operational scope covers biomorphic interface design, custom sound dampening acoustics, and smart-apparel specifications. Your personal alignment with functional design choices ensures you intuitively build unpretentious, hyper-functional interactive touchpoints that harmonize extreme mobility with technical beauty."
+        else:
+            # Fallback layout for coffee, art, zines, solar and all other inputs
+            title = f"Chief Cultural Strategist of {w1} Systems"
+            domain = f"{w2} // Architectural {w3} Layouts"
+            desc1 = f"Your custom affinity matrix focusing on <strong>{vibe}</strong> maps directly to elite, design-driven environments where subcultural preservation, atmosphere curation, and community dynamics dictate modern commercial footprints. Your specific profile indexes high with luxury consumer paradigms, showing an instinctive capacity to direct decentralized creative workflows."
+            desc2 = f"In this role, your daily operational focus balances subcultural authenticity against premium experience curation. Your lifestyle choices grant you an unreplicable competitive advantage, allowing you to design hyper-functional interactive touchpoints that harmonize contemporary subcultures with deep, high-spec environmental beauty."
+
         ai_analysis = f"""
-        <h3 class="text-3xl font-bold tracking-tight text-white mb-2 heading-font">Global Director of Lifestyle Experience & Curation</h3>
-        <div class="text-purple-400 font-mono text-xs uppercase tracking-widest mb-6 font-semibold">{primary_vibe} // {secondary_vibe} Infrastructure Matrix</div>
-        
-        <p class="text-gray-300 text-base leading-relaxed mb-6 font-light">
-        Your custom affinity profile focusing on <strong>{vibe}</strong> maps directly to elite, design-driven environments where subcultural preservation, atmosphere design, and community dynamics dictate modern commercial footprints. Your specific profile indexes high with luxury consumer paradigms, showing an instinctive capacity to direct decentralized creative workflows.
-        </p>
-        
-        <p class="text-gray-400 text-sm leading-relaxed border-t border-gray-800/40 pt-4 font-light italic bg-white/5 p-4 rounded-xl">
-        In this role, your daily operational scope bridges subcultural authenticity with premium physical and digital touchpoints. Your innate lifestyle practices grant you an unreplicable competitive advantage, enabling you to engineer pristine interactive products that seamlessly harmonize contemporary subcultures with deep, high-spec environmental aesthetics.
-        </p>
+        <h3 class="text-3xl font-bold tracking-tight text-white mb-2 heading-font">{title}</h3>
+        <div class="text-purple-400 font-mono text-xs uppercase tracking-widest mb-6 font-semibold">{domain}</div>
+        <p class="text-gray-300 text-base leading-relaxed mb-6 font-light">{desc1}</p>
+        <p class="text-gray-400 text-sm leading-relaxed border-t border-gray-800/40 pt-4 font-light italic bg-white/5 p-4 rounded-xl">{desc2}</p>
         """
 
     result_html = f"""

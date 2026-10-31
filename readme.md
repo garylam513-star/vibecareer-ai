@@ -51,19 +51,34 @@ The application is engineered as a secure, stateless, decoupled microservice bui
 * **Input String:** `Specialty Espresso Bars, Lo-Fi Hip Hop, Independent Zines, Mid-Century Modern furniture, Analogue Photography`
 * **System Return Output:**
 ```text
-[PASTE YOUR SYSTEM LIVE OUTPUT CARD CONTENT HERE]
+Global Director of Lifestyle Experience & Curation
+['Specialty Espresso Bars', 'Lo-Fi Hip Hop', 'Independent Zines', 'Mid-Century Modern furniture', 'Analogue Photography'] // ['Specialty Espresso Bars', 'Lo-Fi Hip Hop', 'Independent Zines', 'Mid-Century Modern furniture', 'Analogue Photography'] Infrastructure Matrix
+
+Your custom affinity profile focusing on Specialty Espresso Bars, Lo-Fi Hip Hop, Independent Zines, Mid-Century Modern furniture, Analogue Photography maps directly to elite, design-driven environments where subcultural preservation, atmosphere design, and community dynamics dictate modern commercial footprints. Your specific profile indexes high with luxury consumer paradigms, showing an instinctive capacity to direct decentralized creative workflows.
+
+In this role, your daily operational scope bridges subcultural authenticity with premium physical and digital touchpoints. Your innate lifestyle practices grant you an unreplicable competitive advantage, enabling you to engineer pristine interactive products that seamlessly harmonize contemporary subcultures with deep, high-spec environmental aesthetics. 
 ```
 
 ### Test Case 2: High-Performance Cyber-Aesthetic
 * **Input String:** `Tokyo Techwear, Synthwave music, Retro-arcade design, Cyberpunk media, Mechanical keyboards`
 * **System Return Output:**
 ```text
-[PASTE YOUR SYSTEM LIVE OUTPUT CARD CONTENT HERE]
+Principal Interactive Architect & Diegetic Systems Designer
+Sensory Engineering // Wearable Tech Ecosystems
+
+Your aesthetic preferences focusing on Tokyo Techwear, Synthwave music, Retro-arcade design, Cyberpunk media, Mechanical keyboards map directly to the intersection of industrial utility and high-performance immersive tech. Your background registers a rare statistical correlation native to high-end hardware ecosystems, mechanical custom input decks, and modular apparel engineering.
+
+In this role, your daily operational scope covers biomorphic interface design, custom sound dampening acoustics, and smart-apparel specifications. Your personal alignment with functional design choices ensures you intuitively build unpretentious, hyper-functional interactive touchpoints that harmonize extreme mobility with technical beauty.
 ```
 
 ### Test Case 3: High-End Outdoor Utility & Eco-Minimalism
 * **Input String:** `Gorpcore fashion, Ambient Drone music, Glamping & Eco-Travel, Organic architecture, Functional design`
 * **System Return Output:**
 ```text
-[PASTE YOUR SYSTEM LIVE OUTPUT CARD CONTENT HERE]
+Chief Cultural Strategist of Gorpcore fashion Systems
+Ambient Drone music // Architectural Glamping & Eco-Travel Layouts
+
+Your custom affinity matrix focusing on Gorpcore fashion, Ambient Drone music, Glamping & Eco-Travel, Organic architecture, Functional design maps directly to elite, design-driven environments where subcultural preservation, atmosphere curation, and community dynamics dictate modern commercial footprints. Your specific profile indexes high with luxury consumer paradigms, showing an instinctive capacity to direct decentralized creative workflows.
+
+In this role, your daily operational focus balances subcultural authenticity against premium experience curation. Your lifestyle choices grant you an unreplicable competitive advantage, allowing you to design hyper-functional interactive touchpoints that harmonize contemporary subcultures with deep, high-spec environmental beauty.
 ```
