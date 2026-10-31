@@ -1,0 +1,15 @@
+# Ignore the Python Virtual Environment
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+
+# Ignore local environment variable files
+.env
+.env.local
+.keys/
+
+# Ignore OS-specific configuration files
+.DS_Store
+.vscode/
